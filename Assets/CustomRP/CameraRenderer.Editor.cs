@@ -13,6 +13,9 @@ public partial  class CameraRenderer
     private partial void DrawUnSupportedShaders();
     private partial void PrepareBuffer();
     private partial void DrawGizmos();
+
+
+    private partial void PrepareForSceneWindow(); 
     #if UNITY_EDITOR
 
     
@@ -32,6 +35,8 @@ public partial  class CameraRenderer
             new ShaderTagId("Vertex"),
             new ShaderTagId("VertexLMRGBM"),
             new ShaderTagId("VertexLM"),
+          
+            
             
             
         };
@@ -39,7 +44,16 @@ public partial  class CameraRenderer
         private static Material errorMaterial;
 
 
-      
+        
+        //render ui using out custom RP
+        private partial void PrepareForSceneWindow()
+        {
+            if(camera.cameraType == CameraType.SceneView)
+                    ScriptableRenderContext.EmitWorldGeometryForSceneView(camera);
+            
+            
+        }
+
 
         private  partial void DrawUnSupportedShaders()
             {
@@ -48,7 +62,13 @@ public partial  class CameraRenderer
                 {
                     errorMaterial = new Material(Shader.Find("Hidden/InternalErrorShader"));            
                 }
+                
+                //shaders come from draw
+                //render order comees from filter I guess
 
+                
+                //check the cull for objects w these shaer ids and then tag them as unsupported
+                // and asisgn a pink material
                 var drawingSetting = new DrawingSettings(legacyShaderTagIds[0], new SortingSettings(camera))
                 {
                         overrideMaterial  = errorMaterial
@@ -66,8 +86,10 @@ public partial  class CameraRenderer
 
         private partial void DrawGizmos()
         {
+            
+            
             //chekc if gizmoz can be drawm
-            if (Handles.ShouldRenderGizmos())
+            if (UnityEditor.Handles.ShouldRenderGizmos())
             {
                 context.DrawGizmos(camera ,GizmoSubset.PreImageEffects);
                 context.DrawGizmos(camera ,GizmoSubset.PostImageEffects);
