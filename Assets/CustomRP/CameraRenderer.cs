@@ -1,5 +1,7 @@
 using UnityEngine ;
+
 using UnityEngine.Profiling;
+
 using UnityEngine.Rendering ;
 
 
@@ -26,8 +28,12 @@ public partial  class CameraRenderer
             this.camera = camera;
             
             
+
             PrepareBuffer(); //for multiple camera and camera name
             PrepareForSceneWindow();
+
+            PrepareBuffer();
+
             if (!Cull()) return;
             
             Setup();
@@ -68,12 +74,21 @@ public partial  class CameraRenderer
     private CommandBuffer buffer = new CommandBuffer();
     private void Setup()
     {   
+
         context.SetupCameraProperties(camera); //set at compile time
         CameraClearFlags flags = camera.clearFlags;
         buffer.ClearRenderTarget(flags <= CameraClearFlags.Depth, flags <= CameraClearFlags.Color , flags == CameraClearFlags.Color ? camera.backgroundColor.linear : Color.clear);
         buffer.BeginSample(sampleName); // profiler or frame debugger specific
         ExecuteBuffer();
         
+
+        context.SetupCameraProperties(camera);
+        CameraClearFlags flags = camera.clearFlags;
+        buffer.ClearRenderTarget(flags <= CameraClearFlags.Depth, flags <= CameraClearFlags.Color , flags == CameraClearFlags.Color ?
+            camera.backgroundColor.linear : Color.clear);
+        buffer.BeginSample(sampleName);
+        ExecuteBuffer();
+
     }
 
 

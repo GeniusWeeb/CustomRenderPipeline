@@ -15,7 +15,9 @@ public partial  class CameraRenderer
     private partial void DrawGizmos();
 
 
+
     private partial void PrepareForSceneWindow(); 
+
     #if UNITY_EDITOR
 
     
@@ -35,13 +37,13 @@ public partial  class CameraRenderer
             new ShaderTagId("Vertex"),
             new ShaderTagId("VertexLMRGBM"),
             new ShaderTagId("VertexLM"),
-          
-            
+
             
             
         };
 
         private static Material errorMaterial;
+
 
 
         
@@ -55,6 +57,7 @@ public partial  class CameraRenderer
         }
 
 
+
         private  partial void DrawUnSupportedShaders()
             {
 
@@ -62,13 +65,15 @@ public partial  class CameraRenderer
                 {
                     errorMaterial = new Material(Shader.Find("Hidden/InternalErrorShader"));            
                 }
+
                 
                 //shaders come from draw
                 //render order comees from filter I guess
 
                 
                 //check the cull for objects w these shaer ids and then tag them as unsupported
-                // and asisgn a pink material
+
+
                 var drawingSetting = new DrawingSettings(legacyShaderTagIds[0], new SortingSettings(camera))
                 {
                         overrideMaterial  = errorMaterial
@@ -86,10 +91,15 @@ public partial  class CameraRenderer
 
         private partial void DrawGizmos()
         {
+
             
             
             //chekc if gizmoz can be drawm
             if (UnityEditor.Handles.ShouldRenderGizmos())
+
+            //chekc if gizmoz can be drawm
+            if (Handles.ShouldRenderGizmos())
+
             {
                 context.DrawGizmos(camera ,GizmoSubset.PreImageEffects);
                 context.DrawGizmos(camera ,GizmoSubset.PostImageEffects);
