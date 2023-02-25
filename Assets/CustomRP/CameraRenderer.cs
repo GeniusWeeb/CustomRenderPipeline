@@ -19,8 +19,8 @@ public partial  class CameraRenderer
     private const string bufferName = "Render Custom Camera";
 
     #region Entry point
-        public void Render(ScriptableRenderContext context, Camera camera)
-        {
+        public void Render(ScriptableRenderContext context, Camera camera , bool useDynamicBatching , bool useGPUInstancing)
+        {   
             this.context = context;
             this.camera = camera;
             
@@ -29,21 +29,27 @@ public partial  class CameraRenderer
             if (!Cull()) return;
             
             Setup();
-            DrawVisibleGeometry();
+            DrawVisibleGeometry(useDynamicBatching ,useGPUInstancing);
             DrawUnSupportedShaders();
             DrawGizmos();
             Submit();
         }
         
-        private void DrawVisibleGeometry()
+        private void DrawVisibleGeometry(bool useDynamicBatching , bool useGPUInstancing)
         {
 
             var sortingSetings = new SortingSettings(camera)
             {
                 criteria = SortingCriteria.CommonOpaque
                 
-            }; 
-            var drawingSettings = new DrawingSettings(unlitShaderTagId , sortingSetings);
+            };
+            var drawingSettings = new DrawingSettings(unlitShaderTagId, sortingSetings)
+            {
+                
+                enableDynamicBatching = useDynamicBatching,
+                enableInstancing = useGPUInstancing
+                
+            };
             
             //what to specifically render 
             var filteringSettings = new FilteringSettings(RenderQueueRange.opaque);
