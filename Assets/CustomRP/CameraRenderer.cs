@@ -88,13 +88,6 @@ public partial  class CameraRenderer
         ExecuteBuffer();
         
 
-        context.SetupCameraProperties(camera);
-        CameraClearFlags flags = camera.clearFlags;
-        buffer.ClearRenderTarget(flags <= CameraClearFlags.Depth, flags <= CameraClearFlags.Color , flags == CameraClearFlags.Color ?
-            camera.backgroundColor.linear : Color.clear);
-        buffer.BeginSample(sampleName);
-        ExecuteBuffer();
-
     }
 
 
