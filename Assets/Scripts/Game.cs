@@ -1,15 +1,15 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO ; 
 using Random = UnityEngine.Random;
 
-public  partial class Game : MonoBehaviour
+public   class Game : MonoBehaviour
 {
-
-	
-
-
-
+	public void Start()
+	{
+		Debug.Log("this looks good ");
+	}
 }
 
 
